@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+
+<title>RK Footwear</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{%static "img/favicon.png" %}" type="image/png">
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" type="text/css" href="{%static "css/w3.css" %}">
+<script src="https://kit.fontawesome.com/c419468c1a.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="manifest" href="{%static "javascript/manifest.json" %}">
+<style>
+ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+</style>
+
+</head>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">rkfootwear</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="{%static "img\depositphotos_134255710-stock-illustration-avatar-vector-male-profile-gray.jpg" %}" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      <span>Welcome, <strong>{{user.user_name}}</strong></span><br>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="/logout" class="w3-bar-item w3-button"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5><a href="/dashboard" class="w3-bar-item w3-button w3-padding">Dashboard</a></h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+      <div class="w3-dropdown-click">
+      <button onclick="dropdownItem()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-boxes"></i>  Items <i class="fa fa-caret-down"></i></button>
+      <div id="DemoItem" class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="/items" class="w3-bar-item w3-button w3-padding">  Add Item </a>
+        <a href="/restock" class="w3-bar-item w3-button w3-padding">  Re-Stock Item </a>
+        <a href="/items_details" class="w3-bar-item w3-button w3-padding">  See All Item</a>
+        <a href="/items_search" class="w3-bar-item w3-button w3-padding">  Search Item</a>
+        <a href="/return" class="w3-bar-item w3-button w3-padding">  See All Return Item</a>
+      </div>
+    </div>
+
+    <div class="w3-dropdown-click">
+    <button onclick="dropdownUser()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-users fa-fw"></i>  Users <i class="fa fa-caret-down"></i></button>
+    <div id="DemoUser" class="w3-dropdown-content w3-bar-block w3-card-4">
+      <a href="/users" class="w3-bar-item w3-button w3-padding">  Add User </a>
+      <a href="/search_users" class="w3-bar-item w3-button w3-padding">  Search User</a>
+      <a href="/sales_record" class="w3-bar-item w3-button w3-padding">  User Sales Record</a>
+    </div>
+  </div>
+
+  <div class="w3-dropdown-click">
+  <button onclick="dropdownSale()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sales <i class="fa fa-caret-down"></i></button>
+  <div id="DemoSale" class="w3-dropdown-content w3-bar-block w3-card-4">
+    <a href="/salesman" class="w3-bar-item w3-button w3-padding">  Sale Items </a>
+    <a href="/salesearch" class="w3-bar-item w3-button w3-padding">  All Sale</a>
+    <a href="/salegraph" class="w3-bar-item w3-button w3-padding">  Sales Graph</a>
+  </div>
+ </div>
+
+ <div class="w3-dropdown-click">
+ <button onclick="dropdownStock()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-cubes"></i>  Stock Managment  <i class="fa fa-caret-down"></i></button>
+ <div id="DemoStock" class="w3-dropdown-content w3-bar-block w3-card-4">
+   <a href="/stock" class="w3-bar-item w3-button w3-padding">  Stock Audit </a>
+   <a href="/report" class="w3-bar-item w3-button w3-padding">  Audit Report</a>
+ </div>
+</div>
+
+  </div>
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container">
+    <h5><b>Add New Items</b></h5>
+  </header>
+<!-- Msg -->
+<div class="w3-container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissable">
+        {{message}}
+        </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+
+<p></p>
+<!-- FORM -->
+<form class="w3-container w3-light-grey w3-text-black w3-margin" method="post" action="/iedit/" id='myForm'>
+    {% csrf_token %}
+    {% if item %}
+    {% for items in item %}
+    <div class="w3-row-padding">
+
+    </div>
+
+    <div class="w3-row-padding">
+      <input style="text-transform: capitalize;" value="{{items.id}}" class="w3-input" type="hidden" name="item_id" required></p>
+      <div class="w3-half">
+         <p><label>Item Name</label></p>
+         <p><input style="text-transform: capitalize;" value="{{items.item_name}}" class="w3-input" type="text" id="item_name" name="item_name" required></p>
+      </div>
+      <div class="w3-half">
+         <p><label>Brand Name</label></p>
+         <p><input style="text-transform: capitalize;" value="{{items.brand_name}}" class="w3-input" type="text" id="brand_name" name="brand_name" required></p>
+      </div>
+    </div>
+
+
+    <div class="w3-row-padding">
+     <div class="w3-half">
+      <p><label>Item Size</label></p>
+      <p><select class="w3-select" id="item_size" name="item_size" required>
+      <option value="{{items.item_size}}">{{items.item_size}}</option>
+
+      <option value="5k-7k">5k X 7k</option>
+      <option value="7k-10k">8k X 10k</option>
+      <option value="11-13">11 X 13</option>
+      <option value="1-3">1 X 3</option>
+      <option value="4-5">4 X 5</option>
+      <option value="6-9">6 X 9</option>
+      <option value="10-11">10</option>
+      <option value="10-11">11B X 13B</option>
+      <option value="10-11">11 X 1</option>
+      <option value="10-11">2 X 5</option>
+      <option value="10-11">6 X 8</option>
+      <option value="10-11">9</option>
+      <option value="10-11">4 X 6</option>
+      </select></p>
+    </div>
+
+    <div class="w3-half">
+    <p><label>Item Color</label></p>
+     <p><input style="text-transform: capitalize;" value="{{items.item_color}}" class="w3-input" type="text" id="item_color" name="item_color" required></p>
+   </div>
+
+    <div class="w3-half">
+      <p><label>Item Unit</label></p>
+     <p><select class="w3-select" name="item_unit" required>
+     <option value="Number">Number</option>
+     </select></p>
+    </div>
+
+    <div class="w3-half">
+      <p><label>Quantity</label></p>
+      <p><input class="w3-input" value="{{items.item_quantity}}" type="number" id="item_quantity" name="item_quantity" placeholder="0" required></p>
+    </div>
+
+  </div>
+
+  <div class="w3-row-padding">
+    <div class="w3-half">
+      <p><label>Purchase Price</label></p>
+      <p><input class="w3-input" value="{{items.purchase_price}}" type="number" id="purchase_price" name="purchase_price" placeholder="0.0" required></p>
+    </div>
+    <div class="w3-half">
+      <p><label>Selling Price</label></p>
+      <p><input class="w3-input" value="{{items.selling_price}}" type="number" id="selling_price" name="selling_price" placeholder="0.0" required></p>
+    </div>
+    <div class="w3-half">
+      <p><label>MRP</label></p>
+      <p><input class="w3-input" value="{{items.mrp}}" type="number" id="mrp" name="mrp" placeholder="0.0" required></p>
+    </div>
+
+  </div>
+    <div class="w3-bar">
+      <p><button class="w3-btn w3-blue w3-round" name="btn_save">Save</button></p>
+    </div>
+    <p></p>
+    {%endfor%}
+    {%endif%}
+</form>
+
+
+
+
+<hr>
+<br>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-light-grey">
+    <h4>Product of rkfootwear</h4>
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">Macrotech Corporation</a></p>
+  </footer>
+
+  <!-- End page content -->
+</div>
+
+<script>
+
+// Clear Form
+function clearFun() {
+    document.getElementById("myForm").reset();
+}
+// Clickable Dropdowns
+function dropdownItem() {
+  var x = document.getElementById("DemoItem");
+  var y = document.getElementById("DemoUser");
+  var z = document.getElementById("DemoSale");
+  var w = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+    w.className = w.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownUser() {
+  var x = document.getElementById("DemoUser");
+  var y = document.getElementById("DemoSale");
+  var z = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownSale() {
+  var x = document.getElementById("DemoSale");
+  var y = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownStock() {
+  var x = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>

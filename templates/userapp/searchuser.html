@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+
+<title>RK Footwear</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{%static "img/favicon.png" %}" type="image/png">
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" type="text/css" href="{%static "css/w3.css" %}">
+<link rel="stylesheet" type="text/css" href="{%static "css/popup.css" %}">
+<script src="https://kit.fontawesome.com/c419468c1a.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="manifest" href="{%static "javascript/manifest.json" %}">
+<style>
+ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+
+</head>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">rkfootwear</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="{%static "img\depositphotos_134255710-stock-illustration-avatar-vector-male-profile-gray.jpg" %}" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      <span>Welcome, <strong>{{user.user_name}}</strong></span><br>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="/logout" class="w3-bar-item w3-button"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5><a href="/dashboard" class="w3-bar-item w3-button w3-padding">Dashboard</a></h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+      <div class="w3-dropdown-click">
+      <button onclick="dropdownItem()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-boxes"></i>  Items <i class="fa fa-caret-down"></i></button>
+      <div id="DemoItem" class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="/items" class="w3-bar-item w3-button w3-padding">  Add Item </a>
+        <a href="/restock" class="w3-bar-item w3-button w3-padding">  Re-Stock Item </a>
+        <a href="/items_details" class="w3-bar-item w3-button w3-padding">  See All Item</a>
+        <a href="/items_search" class="w3-bar-item w3-button w3-padding">  Search Item</a>
+        <a href="/return" class="w3-bar-item w3-button w3-padding">  See All Return Item</a>
+      </div>
+    </div>
+
+    <div class="w3-dropdown-click">
+    <button onclick="dropdownUser()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-users fa-fw"></i>  Users <i class="fa fa-caret-down"></i></button>
+    <div id="DemoUser" class="w3-dropdown-content w3-bar-block w3-card-4">
+      <a href="/users" class="w3-bar-item w3-button w3-padding">  Add User </a>
+      <a href="/search_users" class="w3-bar-item w3-button w3-padding">  Search User</a>
+      <a href="/sales_record" class="w3-bar-item w3-button w3-padding">  User Sales Record</a>
+    </div>
+  </div>
+
+  <div class="w3-dropdown-click">
+  <button onclick="dropdownSale()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sales <i class="fa fa-caret-down"></i></button>
+  <div id="DemoSale" class="w3-dropdown-content w3-bar-block w3-card-4">
+    <a href="/salesman" class="w3-bar-item w3-button w3-padding">  Sale Items </a>
+    <a href="/salesearch" class="w3-bar-item w3-button w3-padding">  All Sale</a>
+    <a href="/salegraph" class="w3-bar-item w3-button w3-padding">  Sales Graph</a>
+  </div>
+ </div>
+ <div class="w3-dropdown-click">
+ <button onclick="dropdownStock()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-cubes"></i>  Stock Managment  <i class="fa fa-caret-down"></i></button>
+ <div id="DemoStock" class="w3-dropdown-content w3-bar-block w3-card-4">
+   <a href="/stock" class="w3-bar-item w3-button w3-padding">  Stock Audit </a>
+   <a href="/report" class="w3-bar-item w3-button w3-padding">  Audit Report</a>
+ </div>
+ </div>
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+<p></p>
+<div class="w3-container">
+  <h1 class="w3-margin">All Users</h1>
+
+<hr>
+{% if users %}
+<div class="w3-responsive">
+<table class="w3-table-all">
+  <thead>
+    <th class="w3-gray">User Name</th>
+    <th class="w3-gray">Mobile Number</th>
+    <th class="w3-gray">Status</th>
+
+
+  </thead>
+  <tbody>
+  {% for user in users %}
+  <tr>
+  <td>{{user.user_name}}</td>
+  <td>{{user.mobile_number}}</td>
+  <td>{% if user.is_admin == True %} admin {% else %} user {% endif %}</td>
+
+
+  </tr>
+  {%endfor%}
+</tbody>
+</table>
+</div>
+{%else%}
+<h2>Sorry No Items Records Found</h2>
+{%endif%}
+</div>
+<hr>
+<br>
+</div>
+
+
+<script>
+
+// search table
+
+// Clickable Dropdowns
+function dropdownItem() {
+  var x = document.getElementById("DemoItem");
+  var y = document.getElementById("DemoUser");
+  var z = document.getElementById("DemoSale");
+  var w = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+    w.className = w.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownUser() {
+  var x = document.getElementById("DemoUser");
+  var y = document.getElementById("DemoSale");
+  var z = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownSale() {
+  var x = document.getElementById("DemoSale");
+  var y = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownStock() {
+  var x = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>

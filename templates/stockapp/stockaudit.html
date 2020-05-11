@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+
+<title>RK Footwear</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{%static "img/favicon.png" %}" type="image/png">
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" type="text/css" href="{%static "css/w3.css" %}">
+<link rel="stylesheet" type="text/css" href="{%static "css/loader.css" %}">
+<script src="https://kit.fontawesome.com/c419468c1a.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="manifest" href="{%static "javascript/manifest.json" %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+
+ @charset "UTF-8";
+
+.collapsable-source pre {
+    font-size: small;
+}
+
+.input-field {
+    display: flex;
+    align-items: center;
+    width: 260px;
+}
+
+.input-field label {
+    flex: 0 0 auto;
+    padding-right: 0.5rem;
+}
+
+.input-field input {
+    flex: 1 1 auto;
+    height: 20px;
+}
+
+.input-field button {
+    flex: 0 0 auto;
+    height: 28px;
+    font-size: 20px;
+    width: 40px;
+}
+
+.icon-barcode {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZD0iTTAgNGg0djIwaC00ek02IDRoMnYyMGgtMnpNMTAgNGgydjIwaC0yek0xNiA0aDJ2MjBoLTJ6TTI0IDRoMnYyMGgtMnpNMzAgNGgydjIwaC0yek0yMCA0aDF2MjBoLTF6TTE0IDRoMXYyMGgtMXpNMjcgNGgxdjIwaC0xek0wIDI2aDJ2MmgtMnpNNiAyNmgydjJoLTJ6TTEwIDI2aDJ2MmgtMnpNMjAgMjZoMnYyaC0yek0zMCAyNmgydjJoLTJ6TTI0IDI2aDR2MmgtNHpNMTQgMjZoNHYyaC00eiI+PC9wYXRoPjwvc3ZnPg==);
+}
+
+.overlay {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.overlay__content {
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-height: 90%;
+    max-width: 800px;
+}
+
+.overlay__close {
+    position: absolute;
+    right: 0;
+    padding: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    background-color: white;
+    cursor: pointer;
+    border: 3px solid black;
+    font-size: 1.5rem;
+    margin: -1rem;
+    border-radius: 2rem;
+    z-index: 100;
+    box-sizing: content-box;
+}
+
+.overlay__content video {
+    width: 100%;
+    height: 100%;
+}
+
+.overlay__content canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+#interactive.viewport {
+    position: relative;
+}
+
+#interactive.viewport > canvas, #interactive.viewport > video {
+    max-width: 100%;
+    width: 100%;
+}
+
+canvas.drawing, canvas.drawingBuffer {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+
+@media (max-width: 603px) {
+  /* line 5, ../sass/phone/_viewport.scss */
+  #interactive.viewport {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+
+}
+
+</style>
+<!-- <script type="text/javascript" src="{%static "javascript/quagga.min.js" %}"></script> -->
+<script type="text/javascript" src="{%static "javascript/quagga.js" %}"></script>
+</head>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i></button>
+  <span style="font-family: verdana;" id="sphed" class="w3-bar-item w3-right">rkfootwear</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="{%static "img\depositphotos_134255710-stock-illustration-avatar-vector-male-profile-gray.jpg" %}" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      <label>Welcome,</label><strong>{{user.user_name}}</strong><br>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="/logout" class="w3-bar-item w3-button"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+  </div>
+  <hr>
+  {% if user.is_admin %}
+  <div class="w3-container">
+    <h5><a href="/dashboard" class="w3-bar-item w3-button w3-padding">Dashboard</a></h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+      <div class="w3-dropdown-click">
+      <button onclick="dropdownItem()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-boxes"></i>  Items <i class="fa fa-caret-down"></i></button>
+      <div id="DemoItem" class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="/items" class="w3-bar-item w3-button w3-padding">  Add Item </a>
+        <a href="/restock" class="w3-bar-item w3-button w3-padding">  Re-Stock Item </a>
+        <a href="/items_details" class="w3-bar-item w3-button w3-padding">  See All Item</a>
+        <a href="/items_search" class="w3-bar-item w3-button w3-padding">  Search Item</a>
+        <a href="/return" class="w3-bar-item w3-button w3-padding">  See All Return Item</a>
+      </div>
+    </div>
+
+    <div class="w3-dropdown-click">
+    <button onclick="dropdownUser()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-users fa-fw"></i>  Users <i class="fa fa-caret-down"></i></button>
+    <div id="DemoUser" class="w3-dropdown-content w3-bar-block w3-card-4">
+      <a href="/users" class="w3-bar-item w3-button w3-padding">  Add User </a>
+      <a href="/search_users" class="w3-bar-item w3-button w3-padding">  Search User</a>
+      <a href="/sales_record" class="w3-bar-item w3-button w3-padding">  User Sales Record</a>
+    </div>
+  </div>
+
+  <div class="w3-dropdown-click">
+  <button onclick="dropdownSale()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sales <i class="fa fa-caret-down"></i></button>
+  <div id="DemoSale" class="w3-dropdown-content w3-bar-block w3-card-4">
+    <a href="/salesman" class="w3-bar-item w3-button w3-padding">  Sale Items </a>
+    <a href="/salesearch" class="w3-bar-item w3-button w3-padding">  All Sale</a>
+    <a href="/salegraph" class="w3-bar-item w3-button w3-padding">  Sales Graph</a>
+    <a href="#" onclick="showbr()" class="w3-bar-item w3-button w3-padding"> Sale Manually</a>
+
+  </div>
+ </div>
+
+ <div class="w3-dropdown-click">
+ <button onclick="dropdownStock()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-cubes"></i>  Stock Managment  <i class="fa fa-caret-down"></i></button>
+ <div id="DemoStock" class="w3-dropdown-content w3-bar-block w3-card-4">
+   <a href="/stock" class="w3-bar-item w3-button w3-padding">  Stock Audit </a>
+   <a href="/report" class="w3-bar-item w3-button w3-padding">  Audit Report</a>
+ </div>
+</div>
+
+  </div>
+  {% else %}
+  <a href="/sales_record" class="w3-bar-item w3-button w3-padding"><i class="fas fa-chart-line"></i>  Sales Comission</a><br><br>
+  <!-- <a href="#" onclick="showbr()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sale Manually</a> -->
+  {%endif%}
+
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+  <div class="w3-container">
+
+        <div id="enbr" class="w3-container">
+
+          <div class="w3-row-padding w3-margin">
+            <div class="w3-half">
+            <input style="font-family: verdana;" id="result2" name="micode" class="w3-input w3-mobile w3-section" placeholder="Enter Barcode Number Here" type="number" id="bcod" >
+            </div>
+            <div class="w3-half">
+              <div class="w3-container">
+               <button id="showbtn" onclick="showit()" class="w3-btn w3-blue w3-mobile w3-section w3-round"> Submit</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div id="getitem" class="w3-container w3-margin">
+         <form style="font-family: verdana;" action="/stock/" class="w3-border w3-hover-shadow w3-animate-zoom" id="form1" method="post">
+
+           {% csrf_token %}
+           <table class="w3-table w3-bordered">
+           <tr>
+               <td><label class="w3-xlarge">Product</label></td>
+               <td><label id="art" class="w3-xlarge"></label></td>
+           </tr>
+
+           <tr>
+               <td><label class="w3-xlarge">Brand</label></td>
+               <td><label id="bnd" class="w3-xlarge"></label></td>
+           </tr>
+
+           <tr>
+               <td><label class="w3-xlarge">Color</label></td>
+               <td><label id="col" class="w3-xlarge"></label></td>
+           </tr>
+
+           <tr>
+               <td><label class="w3-xlarge">Size</label></td>
+               <td><label id="sz" class="w3-xlarge"></label></td>
+           </tr>
+
+           <tr>
+               <td><label class="w3-xlarge">Date</label></td>
+               <td><label id="dt" class="w3-xlarge"></label></td>
+           </tr>
+
+           <tr>
+               <td><label class="w3-xlarge">Opening Stock</label></td>
+               <td><label id="os" class="w3-xlarge"></label></td>
+           </tr>
+
+           <tr>
+               <td><label class="w3-xlarge">Total Sale</label> </td>
+               <td><label id="ts" class="w3-xlarge"></label></td>
+           </tr>
+
+           <tr>
+               <td><label class="w3-xlarge">Closing Stock</label> </td>
+               <td><label id="cs" class="w3-xlarge"></label></td>
+           </tr>
+
+
+         </table>
+
+          <div class="w3-container">
+           <p><input type="text" id="result" name="icode"></p>
+           <p><input class="w3-input" type="number" id="slcl" name="head_qty" placeholder="0.0" required></p>
+
+         </div>
+          <div class="w3-container">
+
+           <button class="w3-btn w3-blue w3-mobile w3-section w3-round" name="stock">Save</button>
+
+         </div>
+           <p></p>
+         </form>
+        </div>
+
+    <div class="w3-display-bottomright">
+      <button id="scn" onclick="load_quagga()" class="w3-margin w3-red w3-xxlarge w3-circle w3-hover-shadow" name="isale"><i class="fas fa-camera w3-xxlarge"></i></button>
+      <button id="scn1" onclick="showbr()" class="w3-margin w3-red w3-xxlarge w3-circle w3-hover-shadow" name="isale"><i class="fas fa-keyboard"></i></button>
+
+    </div>
+     <div class="w3-container w3-center">
+       <div class="w3-display-middle" id="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+     </div>
+
+       <!-- <div id="camera" class="viewport"></div> -->
+
+       <div id="interactive" class="viewport"></div>
+
+
+   </div>
+
+  <!-- End page content -->
+</div>
+
+<script type="text/javascript">
+//page ready
+$(document).ready(function() {
+    document.getElementById("form1").style.display = "none";
+    document.getElementById("lds-ellipsis").style.display = "none";
+    document.getElementById("enbr").style.display = "none";
+         });
+
+function stopscn(){
+  Quagga.stop();
+  document.getElementById("interactive").style.display = "none";
+  document.getElementById("lds-ellipsis").style.display = "none";
+}
+//Manually barcode fun
+function showbr(){
+  document.getElementById("enbr").style.display = "block";
+  document.getElementById("scn").style.display = "none";
+  document.getElementById("scn1").style.display = "none";
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+  Quagga.stop();
+  document.getElementById("interactive").style.display = "none";
+  document.getElementById("lds-ellipsis").style.display = "none";
+}
+
+function showit(){
+  var barcode = document.getElementById("result2").value;
+
+  document.getElementById("interactive").style.display = "none";
+  document.getElementById("scn").style.display = "none";
+  document.getElementById("scn1").style.display = "none";
+  document.getElementById("lds-ellipsis").style.display = "none";
+  document.getElementById("form1").style.display = "block";
+  document.getElementById("result2").style.display = "none";
+  document.getElementById("result").style.display = "none";
+  document.getElementById("showbtn").style.display = "none";
+  document.getElementById("slcl").focus();
+  $.myjQuery2();
+document.getElementById("result").value = barcode;
+
+}
+//input click fun
+function spclick(){
+  var val = document.getElementById("slcl").value;
+  document.getElementById("sphed").innerHTML ="SP "+val+' <i class="fas fa-rupee-sign w3-large"></i>';
+}
+//get data ajax call
+$.myjQuery = function(){
+   	var itemname = $("#result").val();
+   	var data = {itemname};
+
+   	$.ajax({
+   		type : 'GET',
+   		url :  "{% url 'get_item_name' %}",
+   		data : data,
+   		success : function(response){
+        document.getElementById('art').innerHTML = response.get_iname.item_name;
+        document.getElementById('bnd').innerHTML = response.get_iname.brand_name;
+        document.getElementById('col').innerHTML = response.get_iname.item_color;
+        document.getElementById('sz').innerHTML = response.get_iname.item_size;
+        document.getElementById('dt').innerHTML = response.get_iname.item_date;
+        document.getElementById('os').innerHTML = response.get_iname.Open_stock+' Qty';
+        document.getElementById('cs').innerHTML = response.get_iname.item_quantity+' Qty';
+        document.getElementById('ts').innerHTML = response.get_iname.total_sale+' Qty';
+   		},
+   		error : function(response){
+   			alert("product not found please try again!");
+   		}
+
+   	})
+  };
+
+  $.myjQuery2 = function(){
+     	var itemname = $("#result2").val();
+     	var data = {itemname};
+
+     	$.ajax({
+     		type : 'GET',
+     		url :  "{% url 'get_item_name' %}",
+     		data : data,
+     		success : function(response){
+          document.getElementById('art').innerHTML = response.get_iname.item_name;
+          document.getElementById('bnd').innerHTML = response.get_iname.brand_name;
+          document.getElementById('col').innerHTML = response.get_iname.item_color;
+          document.getElementById('sz').innerHTML = response.get_iname.item_size;
+          document.getElementById('dt').innerHTML = response.get_iname.item_date;
+          document.getElementById('os').innerHTML = response.get_iname.Open_stock+'Qty';
+          document.getElementById('cs').innerHTML = response.get_iname.item_quantity+'Qty';
+          document.getElementById('ts').innerHTML = response.get_iname.total_sale+'Qty';
+     		},
+     		error : function(response){
+     			alert("product not found please try again!");
+     		}
+
+     	})
+    };
+//barcode scaner
+var beep = new Audio();
+beep.src = "{%static "sound/beep-07.mp3" %}";
+
+function load_quagga(){
+
+  document.getElementById("interactive").style.display = "block";
+  document.getElementById("lds-ellipsis").style.display = "block";
+
+  var value;
+    var App = {
+        init : function() {
+            Quagga.init(this.state, function(err) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                App.attachListeners();
+                Quagga.start();
+            });
+        },
+        initCameraSelection: function(){
+            var streamLabel = Quagga.CameraAccess.getActiveStreamLabel();
+
+            return Quagga.CameraAccess.enumerateVideoDevices()
+            .then(function(devices) {
+                function pruneText(text) {
+                    return text.length > 30 ? text.substr(0, 30) : text;
+                }
+                var $deviceSelection = document.getElementById("deviceSelection");
+                while ($deviceSelection.firstChild) {
+                    $deviceSelection.removeChild($deviceSelection.firstChild);
+                }
+                devices.forEach(function(device) {
+                    var $option = document.createElement("option");
+                    $option.value = device.deviceId || device.id;
+                    $option.appendChild(document.createTextNode(pruneText(device.label || device.deviceId || device.id)));
+                    $option.selected = streamLabel === device.label;
+                    $deviceSelection.appendChild($option);
+                });
+            });
+        },
+            querySelectedReaders: function() {
+        return Array.prototype.slice.call(document.querySelectorAll('.readers input[type=checkbox]'))
+            .filter(function(element) {
+                return !!element.checked;
+            })
+            .map(function(element) {
+                return element.getAttribute("name");
+            });
+    },
+        attachListeners: function() {
+            var self = this;
+
+            self.initCameraSelection();
+            $(".controls").on("click", "button.stop", function(e) {
+                e.preventDefault();
+                Quagga.stop();
+            });
+
+            $(".controls .reader-config-group").on("change", "input, select", function(e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                   // value = $target.attr("type") === "checkbox" ? $target.prop("checked") : $target.val(),
+                   value =  $target.attr("type") === "checkbox" ? this.querySelectedReaders() : $target.val();
+                  var  name = $target.attr("name"),
+                    state = self._convertNameToState(name);
+
+                console.log("Value of "+ state + " changed to " + value);
+                self.setState(state, value);
+            });
+        },
+        _accessByPath: function(obj, path, val) {
+            var parts = path.split('.'),
+                depth = parts.length,
+                setter = (typeof val !== "undefined") ? true : false;
+
+            return parts.reduce(function(o, key, i) {
+                if (setter && (i + 1) === depth) {
+                    if (typeof o[key] === "object" && typeof val === "object") {
+                        Object.assign(o[key], val);
+                    } else {
+                        o[key] = val;
+                    }
+                }
+                return key in o ? o[key] : {};
+            }, obj);
+        },
+        _convertNameToState: function(name) {
+            return name.replace("_", ".").split("-").reduce(function(result, value) {
+                return result + value.charAt(0).toUpperCase() + value.substring(1);
+            });
+        },
+        detachListeners: function() {
+            $(".controls").off("click", "button.stop");
+            $(".controls .reader-config-group").off("change", "input, select");
+        },
+        setState: function(path, value) {
+            var self = this;
+
+            if (typeof self._accessByPath(self.inputMapper, path) === "function") {
+                value = self._accessByPath(self.inputMapper, path)(value);
+            }
+
+            self._accessByPath(self.state, path, value);
+
+            console.log(JSON.stringify(self.state));
+            App.detachListeners();
+            Quagga.stop();
+            App.init();
+        },
+        inputMapper: {
+            inputStream: {
+                constraints: function(value){
+                    if (/^(\d+)x(\d+)$/.test(value)) {
+                        var values = value.split('x');
+                        return {
+                            width: {min: parseInt(values[0])},
+                            height: {min: parseInt(values[1])}
+                        };
+                    }
+                    return {
+                        deviceId: value
+                    };
+                }
+            },
+            numOfWorkers: function(value) {
+                return parseInt(value);
+            },
+            decoder: {
+                readers: function(value) {
+                    if (value === 'ean_extended') {
+                        return [{
+                            format: "ean_reader",
+                            config: {
+                                supplements: [
+                                    'ean_5_reader', 'ean_2_reader'
+                                ]
+                            }
+                        }];
+                    }
+                    console.log("value before format :"+value);
+                    return [{
+                        format: value + "_reader",
+                        config: {}
+                    }];
+                }
+            }
+        },
+        state: {
+            inputStream: {
+                type : "LiveStream",
+                constraints: {
+                    width: {min: 640},
+                    height: {min: 480},
+                    aspectRatio: {min: 1, max: 100},
+                    facingMode: "environment" // or user
+                }
+            },
+            locator: {
+                patchSize: "large",
+                halfSample: true
+            },
+            numOfWorkers: 4,
+            decoder: {
+                readers : ["code_39_reader","code_128_reader"]
+            },
+            locate: true,
+            multiple:true
+        },
+        lastResult : null
+    };
+
+                   //value =  App.querySelectedReaders() ;
+    App.init();
+
+
+    Quagga.onProcessed(function(result) {
+        var drawingCtx = Quagga.canvas.ctx.overlay,
+            drawingCanvas = Quagga.canvas.dom.overlay;
+
+        if (result) {
+            if (result.boxes) {
+                drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                result.boxes.filter(function (box) {
+                    return box !== result.box;
+                }).forEach(function (box) {
+                    Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: "green", lineWidth: 2});
+                });
+            }
+
+            if (result.box) {
+                Quagga.ImageDebug.drawPath(result.box, {x: 0, y: 1}, drawingCtx, {color: "#00F", lineWidth: 2});
+            }
+
+            if (result.codeResult && result.codeResult.code) {
+                Quagga.ImageDebug.drawPath(result.line, {x: 'x', y: 'y'}, drawingCtx, {color: 'red', lineWidth: 3});
+            }
+        }
+    });
+
+
+
+    Quagga.onDetected(function(result){
+      // var code = result.codeResult.code;
+      document.querySelector('#result').value = result.codeResult.code;
+      beep.play();
+      Quagga.stop();
+
+      document.getElementById("interactive").style.display = "none";
+      document.getElementById("scn").style.display = "none";
+      document.getElementById("scn1").style.display = "none";
+      document.getElementById("lds-ellipsis").style.display = "none";
+      document.getElementById("form1").style.display = "block";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("slcl").focus();
+      $.myjQuery();
+    });
+};
+function stopscan(){
+  Quagga.stop();
+  document.getElementById("interactive").style.display = "none";
+
+}
+
+
+// Clear Form
+function clearFun() {
+    document.getElementById("myForm").reset();
+}
+
+// Clickable Dropdowns
+function dropdownItem() {
+  var x = document.getElementById("DemoItem");
+  var y = document.getElementById("DemoUser");
+  var z = document.getElementById("DemoSale");
+  var w = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+    w.className = w.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownUser() {
+  var x = document.getElementById("DemoUser");
+  var y = document.getElementById("DemoSale");
+  var z = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownSale() {
+  var x = document.getElementById("DemoSale");
+  var y = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownStock() {
+  var x = document.getElementById("DemoStock");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>

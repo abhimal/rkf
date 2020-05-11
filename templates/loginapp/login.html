@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{%static "img/favicon.png" %}" type="image/png">
+    <meta name="theme-color" content="#000000">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{%static "css/w3.css" %}">
+    <link rel="manifest" href="{%static "javascript/manifest.json" %}">
+  </head>
+  <body>
+
+    <div class="w3-container w3-margin">
+
+     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+
+       <div class="w3-center"><br>
+         <img src="{%static "img/rkf.jpeg" %}" alt="RKF" style="width:30%" class="w3-margin-top">
+       </div>
+       <!-- Msg -->
+       <!-- Msg -->
+       <div class="w3-container">
+           {% if messages %}
+             {% for message in messages %}
+               <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{message.tags}}{% endif %}" role="alert">
+               {{message}}
+               </div>
+               {% endfor %}
+           {% endif %}
+         </div>
+       <form class="w3-container" action="/login/" method="POST">
+         {% csrf_token %}
+         <div class="w3-section">
+           <label><b>Mobile Number</b></label>
+           <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Mobile Number" name="mobnumber" required>
+           <label><b>Password</b></label>
+           <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="psw" required>
+           <button class="w3-button w3-block w3-red w3-section w3-padding" type="submit">Login</button>
+           <input class="w3-check w3-margin-top" type="checkbox" checked="checked"> Remember me
+         </div>
+       </form>
+
+       <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+       </div>
+
+     </div>
+ </div>
+
+ <script type="text/javascript">
+
+ // serviceWorker
+ if('serviceWorker' in navigator){
+   navigator.serviceWorker.register("{% url 'service-worker.js' %}")
+   .then((reg) => console.log('service worker register', reg))
+   .catch((err) => console.log('service worker not register', err));
+ }
+
+ </script>
+
+  </body>
+</html>

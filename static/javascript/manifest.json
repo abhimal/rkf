@@ -1,0 +1,47 @@
+  {
+  "name": "rkfootwear",
+  "short_name": "rkfootwear",
+  "start_url": "https://rkfootwear-v1.appspot.com",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/icons/icon-72X72.png",
+      "type": "image/png",
+      "sizes": "72X72"
+    },
+    {
+      "src": "/static/icons/icon-96X96.png",
+      "type": "image/png",
+      "sizes": "96X96"
+    },
+    {
+      "src": "/static/icons/icon-128X128.png",
+      "type": "image/png",
+      "sizes": "128X128"
+    },
+    {
+      "src": "/static/icons/icon-152X152.png",
+      "type": "image/png",
+      "sizes": "152X152"
+    },
+    {
+      "src": "/static/icons/icon-192X192.png",
+      "type": "image/png",
+      "sizes": "192X192"
+    },
+    {
+      "src": "/static/icons/icon-384X384.png",
+      "type": "image/png",
+      "sizes": "384X384"
+    },
+    {
+      "src": "/static/icons/icon-512X512.png",
+      "type": "image/png",
+      "sizes": "512X512"
+    }
+
+  ]
+}
