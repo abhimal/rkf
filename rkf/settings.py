@@ -27,7 +27,7 @@ SECRET_KEY = '@pou$y(3k=5l16rkq(2wc_bg1p&=#ahkeoehni2z6l5v421rsp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://www.rkfootwear.in','https://rkfootwear.in']
 
 
 # Application definition
