@@ -1,14 +1,16 @@
 from django.shortcuts import render
-from itemapp.models import Items
+from itemapp.models import Items,Shop
 from django.contrib import messages
 
 # Create your views here.
 def item_update_views(request, id):
     item = Items.objects.filter(id=id)
-    return render(request,'actionapp/upitem.html',{'item':item})
+    shops = Shop.objects.all()
+    return render(request,'actionapp/upitem.html',{'item':item,'shops':shops})
 
 def item_edit_views(request):
     if request.method == 'POST':
+        shopname = request.POST['shop_name']
         itemid = request.POST['item_id']
         itemname = request.POST['item_name']
         brandname = request.POST['brand_name']
@@ -20,7 +22,7 @@ def item_edit_views(request):
         sellingprice = request.POST['selling_price']
         mrp = request.POST['mrp']
 
-        Items.objects.filter(id=itemid).update(item_name=itemname,
+        Items.objects.filter(id=itemid).update(shop_name=shopname,item_name=itemname,
         brand_name=brandname, item_size=itemsize, item_color=itemcolor,
         item_unit=itemunit, item_quantity=itemquantity,Open_stock=itemquantity, purchase_price=purchaseprice,
         selling_price=sellingprice, mrp=mrp)

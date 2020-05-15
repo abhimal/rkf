@@ -25,11 +25,20 @@ def dash_views(request):
     topitem = Items.objects.filter(item_level=topI)
     topitem = topitem[0:1]
 
+    items = Items.objects.all()[:5]
+    for item in items:
+        if item.item_quantity == 5 or int(item.item_quantity)<5:
+            data.append(item)
+
+    return render(request,'dashboardapp/dash.html',{'sale':sale, 'records':records, 'data':data, 'amount':amount, 'topitem':topitem})
+
+@login_required(login_url='login')
+@admin_only
+def lowitem_views(request):
+    data = []
     items = Items.objects.all()
     for item in items:
         if item.item_quantity == 5 or int(item.item_quantity)<5:
             data.append(item)
-    today = datetime.now()
-    today.strftime("%B / %d / %Y : %H:%M")
 
-    return render(request,'dashboardapp/dash.html',{'sale':sale, 'records':records, 'data':data, 'amount':amount, 'topitem':topitem, 'today':today})
+    return render(request,'dashboardapp/lowitem.html',{'data':data})

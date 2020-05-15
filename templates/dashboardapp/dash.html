@@ -46,6 +46,16 @@
   </div>
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+      <button onclick="location.href = '/salesman';" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sale Items </button>
+
+      <div class="w3-dropdown-click">
+      <button onclick="dropdownShop()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-store"></i>  Shop Managment <i class="fa fa-caret-down"></i></button>
+      <div id="DemoShop" class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="/shop" class="w3-bar-item w3-button w3-padding">  Add Shop </a>
+        <a href="/search" class="w3-bar-item w3-button w3-padding">  Search Shop </a>
+      </div>
+    </div>
+
       <div class="w3-dropdown-click">
       <button onclick="dropdownItem()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-boxes"></i>  Item Managment <i class="fa fa-caret-down"></i></button>
       <div id="DemoItem" class="w3-dropdown-content w3-bar-block w3-card-4">
@@ -54,7 +64,7 @@
         <a href="/dumpstock" class="w3-bar-item w3-button w3-padding">  Add Dump Stock</a>
         <a href="/items_details" class="w3-bar-item w3-button w3-padding">  See All Item</a>
         <a href="/items_search" class="w3-bar-item w3-button w3-padding">  Search Item</a>
-        <a href="/return" class="w3-bar-item w3-button w3-padding">  See All Return Item</a>
+        <a href="/lowstock" class="w3-bar-item w3-button w3-padding">  Low Stock</a>
       </div>
     </div>
 
@@ -68,11 +78,10 @@
   </div>
 
   <div class="w3-dropdown-click">
-  <button onclick="dropdownSale()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sales Activity <i class="fa fa-caret-down"></i></button>
+  <button onclick="dropdownSale()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-chart-line"></i>  Sales Activity <i class="fa fa-caret-down"></i></button>
   <div id="DemoSale" class="w3-dropdown-content w3-bar-block w3-card-4">
-    <a href="/salesman" class="w3-bar-item w3-button w3-padding">  Sale Items </a>
     <a href="/salesearch" class="w3-bar-item w3-button w3-padding">  All Sale</a>
-    <a href="/salegraph" class="w3-bar-item w3-button w3-padding">  Sales Graph</a>
+    <a href="/return" class="w3-bar-item w3-button w3-padding">  All Return Item</a>
   </div>
  </div>
 
@@ -139,38 +148,6 @@
 
   </div>
 
-  <div class="w3-panel">
-      <div class="w3-row-padding" style="margin:0 -16px">
-        <div class="w3-container">
-          <h5>Low Stock Items</h5>
-          <div class="w3-responsive">
-          <table style="font-family: verdana;" class="w3-table w3-bordered">
-            <tr>
-            <td class=" w3-center"><b>ID</td>
-            <td class=" w3-center"><b>Item</td>
-            <td class=" w3-center"><b>Brand</td>
-            <td class=" w3-center"><b>Size</td>
-            <td class=" w3-center"><b>Color</td>
-            <td class=" w3-center"><b>Quantity</td>
-            </tr>
-
-            {% for item in data %}
-            <tr>
-             <td class=" w3-center">{{item.id}}</td>
-             <td class=" w3-center">{{item.item_name}}</td>
-             <td class=" w3-center">{{item.brand_name}}</td>
-             <td class=" w3-center">{{item.item_size}}</td>
-             <td class=" w3-center">{{item.item_color}}</td>
-             <td class=" w3-center"><strong>{{item.item_quantity}}</strong></td>
-           </tr>
-            {% endfor %}
-
-          </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr>
 
   <div class="w3-panel">
     <div class="w3-row-padding" style="margin:0 -20px">
@@ -190,6 +167,7 @@
             <th class=" w3-center">Salesman</th>
             <th class=" w3-center">Comission</th>
             <th class=" w3-center">Date Time</th>
+            <th class=" w3-center">Shop</th>
             <th class=" w3-center">Exchange</th>
           </tr>
 
@@ -204,8 +182,9 @@
             <td class="w3-center">{{record.sales_id.purchase_price}}</td>
             <td class="w3-center"> {% if record.sales_id.purchase_price > record.sale_price %} <strong style="Color:red;">{{record.sale_price}}</strong> {% else %} {{record.sale_price}} {% endif %} </td>
             <td class="w3-center">{{record.salesman}}</td>
-            <td class="w3-center"><strong>{{record.comission}}</strong></td>
+            <td class="w3-center"><strong>{{record.comission}}<strong></td>
             <td class="w3-center">{{record.sale_dt}}</td>
+            <td class="w3-center"><strong>{{record.shop_name}}<strong></td>
             <td class="w3-center">{% if record.exchange_item == True%} exchange {%endif%} </td>
 
             </tr>
@@ -249,16 +228,35 @@ if('serviceWorker' in navigator){
 }
 
 // Clickable Dropdowns
-function dropdownItem() {
-  var x = document.getElementById("DemoItem");
-  var y = document.getElementById("DemoUser");
-  var z = document.getElementById("DemoSale");
-  var w = document.getElementById("DemoStock");
+function dropdownShop() {
+  var x = document.getElementById("DemoShop");
+  var y = document.getElementById("DemoItem");
+  var z = document.getElementById("DemoUser");
+  var w = document.getElementById("DemoSale");
+  var m = document.getElementById("DemoStock");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     y.className = y.className.replace(" w3-show", "");
     z.className = z.className.replace(" w3-show", "");
     w.className = w.className.replace(" w3-show", "");
+    m.className = w.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownItem() {
+  var x = document.getElementById("DemoItem");
+  var y = document.getElementById("DemoUser");
+  var z = document.getElementById("DemoSale");
+  var w = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+    w.className = w.className.replace(" w3-show", "");
+    m.className = w.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }
@@ -268,10 +266,12 @@ function dropdownUser() {
   var x = document.getElementById("DemoUser");
   var y = document.getElementById("DemoSale");
   var z = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     y.className = y.className.replace(" w3-show", "");
     z.className = z.className.replace(" w3-show", "");
+    m.className = z.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }
@@ -280,9 +280,11 @@ function dropdownUser() {
 function dropdownSale() {
   var x = document.getElementById("DemoSale");
   var y = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     y.className = y.className.replace(" w3-show", "");
+    m.className = y.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }
@@ -290,8 +292,10 @@ function dropdownSale() {
 
 function dropdownStock() {
   var x = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
+      m.className = x.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }

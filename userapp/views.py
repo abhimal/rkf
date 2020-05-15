@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from account.models import Account
 from itemapp.models import Sales
-from userapp.forms import UserForm
+from userapp.forms import UserForm, UserUpdate
 from django.contrib.auth.decorators import login_required
 from loginapp.decorator import unauthenticated_user, allowed_user, admin_only
 from django.contrib.auth.models import Group
@@ -20,9 +20,17 @@ def users_views(request):
             user = form.save()
             mobile_number = form.cleaned_data.get('mobile_number')
             raw_password = form.cleaned_data.get('password1')
+            is_admin = form.cleaned_data.get('is_admin')
+            is_staff = form.cleaned_data.get('is_staff')
 
-            group = Group.objects.get(name='user')
-            user.groups.add(group)
+            if is_admin == True:
+                group = Group.objects.get(name='admin')
+                user.groups.add(group)
+            elif is_staff == True:
+                group = Group.objects.get(name='user')
+                user.groups.add(group)
+
+
 
             # account = authenticate(mobile_number = mobile_number, password = raw_password)
             # login(request,account)
@@ -37,6 +45,61 @@ def users_views(request):
         form = UserForm()
         context['users_form'] = form
         return render(request,'userapp/users.html',context)
+@login_required(login_url='login')
+@admin_only
+def delete_views(request,id):
+    user = Account.objects.get(id=id)
+    user.delete()
+    messages.success(request,'user deleted successfully!')
+    users = Account.objects.all().order_by('id')
+    return render(request,'userapp/searchuser.html', {'users':users})
+
+@login_required(login_url='login')
+@admin_only
+def update_views(request,id):
+    if request.POST:
+        instance = Account.objects.get(id=id)
+        form = UserUpdate(request.POST, instance=instance)
+        if form.is_valid():
+            user = form.save()
+
+            is_admin = form.cleaned_data.get('is_admin')
+            is_staff = form.cleaned_data.get('is_staff')
+
+            if is_admin == True:
+                group = Group.objects.get(name='admin')
+                user.groups.add(group)
+                if is_staff == False:
+                    group = Group.objects.get(name='user')
+                    user.groups.remove(group)
+            elif is_staff == True:
+                group = Group.objects.get(name='user')
+                user.groups.add(group)
+                if is_admin == False:
+                    group = Group.objects.get(name='admin')
+                    user.groups.remove(group)
+
+            messages.success(request,'New user updated successfully!')
+            context = {'users_form':form,'id':id}
+            return render(request,'userapp/update.html',context)
+        else:
+            messages.error(request,form.errors)
+            context = {'users_form':form,'id':id}
+            return render(request,'userapp/update.html',context)
+    else:
+        UserInfo = Account.objects.get(id=id)
+        form = UserUpdate(
+        initial={
+         "user_name": UserInfo.user_name,
+         'mobile_number': UserInfo.mobile_number,
+         'is_admin': UserInfo.is_admin,
+         'is_staff': UserInfo.is_staff,
+         'password': UserInfo.password,
+        }
+        )
+        context = {'users_form':form,'id':id}
+        return render(request,'userapp/update.html',context)
+
 
 @login_required(login_url='login')
 @admin_only

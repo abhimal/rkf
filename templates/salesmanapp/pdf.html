@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Stock Report</title>
+    <title>Sales Report</title>
     <style type="text/css">
         @page {
             size: A4;
@@ -60,7 +60,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3>Stock Audit Report</h3>
+            <h3>Sales Report</h3>
         </div>
 
         <div class="list-group">
@@ -70,40 +70,35 @@
         <table class="table">
             <thead>
             <tr>
-              <th>Shop</th>
               <th>Article</th>
               <th>Brand</th>
               <th>Size</th>
               <th>Color</th>
-              <th>Opening Stock</th>
-              <th>Total Sale</th>
-              <th>Closing Stock</th>
-              <th>Dump Stock</th>
-              <th>Physical Stock</th>
-              <th>Missing Item</th>
+              <th>MRP</th>
+              <th>P P</th>
+              <th>S P</th>
+              <th>Salesman</th>
+              <th>Comission</th>
               <th>Date Time</th>
+              <th>Shop</th>
+              <th>Exchange</th>
             </tr>
             </thead>
             <tbody>
             {% for record in records %}
                 <tr>
+                  <td>{{record.sales_id.item_name}}</td>
+                  <td>{{record.sales_id.brand_name}}</td>
+                  <td>{{record.sales_id.item_size}}</td>
+                  <td>{{record.sales_id.item_color}}</td>
+                  <td>{{record.sales_id.mrp}}</td>
+                  <td>{{record.sales_id.purchase_price}}</td>
+                  <td> {% if record.sales_id.purchase_price > record.sale_price %} <p style="Color:red;"><strong>{{record.sale_price}}</strong></p> {% else %} {{record.sale_price}} {% endif %} </td>
+                  <td>{{record.salesman}}</td>
+                  <td><strong>{{record.comission}}</strong></td>
+                  <td>{{record.sale_dt}}</td>
                   <td>{{record.shop_name}}</td>
-                  <td>{{record.stock_id.item_name}}</td>
-                  <td>{{record.stock_id.brand_name}}</td>
-                  <td>{{record.stock_id.item_size}}</td>
-                  <td>{{record.stock_id.item_color}}</td>
-                  <td>{{record.opening_stock}}</td>
-                  <td>{{record.total_sale}}</td>
-                  <td>{{record.closing_stock}}</td>
-                  <td>{{record.stock_id.dump_stock}}</td>
-                  <td>{{record.physical_qty}}</td>
-                  {% if record.missing_qty == 0%}
-                   <td>{{record.missing_qty}}</td>
-                  {% else %}
-                   <td style="background-color: red;">{{record.missing_qty}}</td>
-                  {% endif %}
-
-                  <td>{{record.stock_audit_date}}</td>
+                  <td>{% if record.exchange_item == True%} exchange {%endif%} </td>
                 </tr>
             {% endfor %}
             </tbody>

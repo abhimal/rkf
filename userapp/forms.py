@@ -15,3 +15,13 @@ class UserForm(UserCreationForm):
         'password1',
         'password2'
         )
+
+class UserUpdate(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = (
+        'user_name',
+        'mobile_number',
+        'is_admin',
+        'is_staff',
+        )

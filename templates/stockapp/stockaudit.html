@@ -153,32 +153,42 @@ canvas.drawing, canvas.drawingBuffer {
       <img src="{%static "img\depositphotos_134255710-stock-illustration-avatar-vector-male-profile-gray.jpg" %}" class="w3-circle w3-margin-right" style="width:46px">
     </div>
     <div class="w3-col s8 w3-bar">
-      <label>Welcome,</label><strong>{{user.user_name}}</strong><br>
+      <span>Welcome, <strong>{{user.user_name}}</strong></span><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
       <a href="/logout" class="w3-bar-item w3-button"><i class="fas fa-sign-out-alt"></i></a>
     </div>
   </div>
   <hr>
-  {% if user.is_admin %}
   <div class="w3-container">
     <h5><a href="/dashboard" class="w3-bar-item w3-button w3-padding">Dashboard</a></h5>
   </div>
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+      <button onclick="location.href = '/salesman';" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sale Items </button>
+
       <div class="w3-dropdown-click">
-      <button onclick="dropdownItem()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-boxes"></i>  Items <i class="fa fa-caret-down"></i></button>
+      <button onclick="dropdownShop()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-store"></i>  Shop Managment <i class="fa fa-caret-down"></i></button>
+      <div id="DemoShop" class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="/shop" class="w3-bar-item w3-button w3-padding">  Add Shop </a>
+        <a href="/search" class="w3-bar-item w3-button w3-padding">  Search Shop </a>
+      </div>
+    </div>
+
+      <div class="w3-dropdown-click">
+      <button onclick="dropdownItem()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-boxes"></i>  Item Managment <i class="fa fa-caret-down"></i></button>
       <div id="DemoItem" class="w3-dropdown-content w3-bar-block w3-card-4">
         <a href="/items" class="w3-bar-item w3-button w3-padding">  Add Item </a>
         <a href="/restock" class="w3-bar-item w3-button w3-padding">  Re-Stock Item </a>
+        <a href="/dumpstock" class="w3-bar-item w3-button w3-padding">  Add Dump Stock</a>
         <a href="/items_details" class="w3-bar-item w3-button w3-padding">  See All Item</a>
         <a href="/items_search" class="w3-bar-item w3-button w3-padding">  Search Item</a>
-        <a href="/return" class="w3-bar-item w3-button w3-padding">  See All Return Item</a>
+        <a href="/lowstock" class="w3-bar-item w3-button w3-padding">  Low Stock</a>
       </div>
     </div>
 
     <div class="w3-dropdown-click">
-    <button onclick="dropdownUser()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-users fa-fw"></i>  Users <i class="fa fa-caret-down"></i></button>
+    <button onclick="dropdownUser()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-users fa-fw"></i>  Users Managment <i class="fa fa-caret-down"></i></button>
     <div id="DemoUser" class="w3-dropdown-content w3-bar-block w3-card-4">
       <a href="/users" class="w3-bar-item w3-button w3-padding">  Add User </a>
       <a href="/search_users" class="w3-bar-item w3-button w3-padding">  Search User</a>
@@ -187,13 +197,10 @@ canvas.drawing, canvas.drawingBuffer {
   </div>
 
   <div class="w3-dropdown-click">
-  <button onclick="dropdownSale()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sales <i class="fa fa-caret-down"></i></button>
+  <button onclick="dropdownSale()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-chart-line"></i>  Sales Activity <i class="fa fa-caret-down"></i></button>
   <div id="DemoSale" class="w3-dropdown-content w3-bar-block w3-card-4">
-    <a href="/salesman" class="w3-bar-item w3-button w3-padding">  Sale Items </a>
     <a href="/salesearch" class="w3-bar-item w3-button w3-padding">  All Sale</a>
-    <a href="/salegraph" class="w3-bar-item w3-button w3-padding">  Sales Graph</a>
-    <a href="#" onclick="showbr()" class="w3-bar-item w3-button w3-padding"> Sale Manually</a>
-
+    <a href="/return" class="w3-bar-item w3-button w3-padding">  All Return Item</a>
   </div>
  </div>
 
@@ -206,11 +213,6 @@ canvas.drawing, canvas.drawingBuffer {
 </div>
 
   </div>
-  {% else %}
-  <a href="/sales_record" class="w3-bar-item w3-button w3-padding"><i class="fas fa-chart-line"></i>  Sales Comission</a><br><br>
-  <!-- <a href="#" onclick="showbr()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-shopping-cart"></i>  Sale Manually</a> -->
-  {%endif%}
-
 </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->
@@ -239,6 +241,10 @@ canvas.drawing, canvas.drawingBuffer {
 
            {% csrf_token %}
            <table class="w3-table w3-bordered">
+             <tr>
+                 <td><label class="w3-xlarge">shop</label></td>
+                 <td><label id="shop" class="w3-xlarge"></label></td>
+             </tr>
            <tr>
                <td><label class="w3-xlarge">Product</label></td>
                <td><label id="art" class="w3-xlarge"></label></td>
@@ -371,6 +377,7 @@ $.myjQuery = function(){
    		url :  "{% url 'get_item_name' %}",
    		data : data,
    		success : function(response){
+        document.getElementById('shop').innerHTML = response.get_iname.shop_name;
         document.getElementById('art').innerHTML = response.get_iname.item_name;
         document.getElementById('bnd').innerHTML = response.get_iname.brand_name;
         document.getElementById('col').innerHTML = response.get_iname.item_color;
@@ -396,6 +403,7 @@ $.myjQuery = function(){
      		url :  "{% url 'get_item_name' %}",
      		data : data,
      		success : function(response){
+          document.getElementById('shop').innerHTML = response.get_iname.shop_name;
           document.getElementById('art').innerHTML = response.get_iname.item_name;
           document.getElementById('bnd').innerHTML = response.get_iname.brand_name;
           document.getElementById('col').innerHTML = response.get_iname.item_color;
@@ -643,16 +651,35 @@ function clearFun() {
 }
 
 // Clickable Dropdowns
-function dropdownItem() {
-  var x = document.getElementById("DemoItem");
-  var y = document.getElementById("DemoUser");
-  var z = document.getElementById("DemoSale");
-  var w = document.getElementById("DemoStock");
+function dropdownShop() {
+  var x = document.getElementById("DemoShop");
+  var y = document.getElementById("DemoItem");
+  var z = document.getElementById("DemoUser");
+  var w = document.getElementById("DemoSale");
+  var m = document.getElementById("DemoStock");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     y.className = y.className.replace(" w3-show", "");
     z.className = z.className.replace(" w3-show", "");
     w.className = w.className.replace(" w3-show", "");
+    m.className = w.className.replace(" w3-show", "");
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function dropdownItem() {
+  var x = document.getElementById("DemoItem");
+  var y = document.getElementById("DemoUser");
+  var z = document.getElementById("DemoSale");
+  var w = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    y.className = y.className.replace(" w3-show", "");
+    z.className = z.className.replace(" w3-show", "");
+    w.className = w.className.replace(" w3-show", "");
+    m.className = w.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }
@@ -662,10 +689,12 @@ function dropdownUser() {
   var x = document.getElementById("DemoUser");
   var y = document.getElementById("DemoSale");
   var z = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     y.className = y.className.replace(" w3-show", "");
     z.className = z.className.replace(" w3-show", "");
+    m.className = z.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }
@@ -674,9 +703,11 @@ function dropdownUser() {
 function dropdownSale() {
   var x = document.getElementById("DemoSale");
   var y = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     y.className = y.className.replace(" w3-show", "");
+    m.className = y.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }
@@ -684,8 +715,10 @@ function dropdownSale() {
 
 function dropdownStock() {
   var x = document.getElementById("DemoStock");
+  var m = document.getElementById("DemoShop");
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
+      m.className = x.className.replace(" w3-show", "");
   } else {
     x.className = x.className.replace(" w3-show", "");
   }

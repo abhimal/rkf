@@ -27,6 +27,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     user_name = models.CharField(max_length=64)
     mobile_number = models.CharField(max_length=10, unique=True)
     user_type = models.CharField(max_length=64)
+    email = models.EmailField(max_length=64,default="xyz@gmail.com")
     date_joined = models.DateTimeField(verbose_name='date joined',  auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login',  auto_now=True)
     is_admin = models.BooleanField(default=False)

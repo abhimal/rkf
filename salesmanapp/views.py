@@ -6,7 +6,17 @@ from django.contrib.auth.decorators import login_required
 from loginapp.decorator import unauthenticated_user, allowed_user, admin_only
 from django.utils.datastructures import MultiValueDictKeyError
 from .filters import SaleFilter, ReturnFilter
-# Create your views here.
+from .render import Render
+from django.views import View
+class PdfSale(View):
+    def get(self, request):
+        records = Sales.objects.all()
+        params = {
+            'records': records,
+            'request': request
+        }
+        return Render.render('salesmanapp/pdf.html', params)
+
 @login_required(login_url='login')
 def salesman_views(request):
     if request.method == 'POST':
@@ -22,9 +32,12 @@ def salesman_views(request):
 
             percent = int(saleprice) * 1/100
 
+            item_id = Items.objects.get(item_code=item_code)
+            shopname = item_id.shop_name
+
 
             sales_info = Sales(item_code=item_code, salesman=salesman_name, mobile_number=mobile_number,
-            sale_price=saleprice, comission=percent, exchange_item=exchange)
+            sale_price=saleprice, comission=percent, exchange_item=exchange,shop_name=shopname)
 
             item_id = Items.objects.get(item_code=item_code)
             id = item_id.id
@@ -48,7 +61,10 @@ def salesman_views(request):
             item_code = request.POST['icode']
             salesman_name = request.POST['sale_man']
 
-            return_info = Return(salesman=salesman_name)
+            item_id = Items.objects.get(item_code=item_code)
+            shopname = item_id.shop_name
+
+            return_info = Return(salesman=salesman_name,shop_name=shopname)
 
             item_id = Items.objects.get(item_code=item_code)
             id = item_id.id
@@ -74,11 +90,45 @@ def sale_search_views(request):
     date_min = request.GET.get('strdate')
     date_max = request.GET.get('enddate')
 
+    shop = request.GET.get('shop')
+    sname = request.GET.get('sname')
+
     if date_min !="" and date_min is not None:
         records = records.filter(sale_date__gte = date_min)
 
     if date_max !="" and date_max is not None:
         records = records.filter(sale_date__lte = date_max)
+
+    if sname !="" and sname is not None:
+        records = records.filter(salesman__icontains = sname)
+
+    if shop !="" and shop is not None:
+        records = records.filter(shop_name__icontains = shop)
+
+    return render(request,'salesmanapp/salesearch.html', {'records':records})
+
+@login_required(login_url='login')
+@admin_only
+def sale_udate_views(request,id):
+    if request.method == 'POST':
+        saleprice = request.POST['sale_close']
+        percent = int(saleprice) * 1/100
+
+        Sales.objects.filter(id=id).update(sale_price=saleprice,comission=percent)
+        messages.success(request,'sales updated successfully!')
+        records = Sales.objects.all().order_by('-id')
+        return render(request,'salesmanapp/salesearch.html', {'records':records})
+    else:
+        records = Sales.objects.get(id=id)
+        return render(request,'salesmanapp/update.html',{'records':records})
+
+@login_required(login_url='login')
+@admin_only
+def sale_delete_views(request,id):
+    sales = Sales.objects.get(id=id)
+    sales.delete()
+    messages.success(request,'sales deleted successfully!')
+    records = Sales.objects.all().order_by('-id')
     return render(request,'salesmanapp/salesearch.html', {'records':records})
 
 @login_required(login_url='login')
@@ -88,11 +138,20 @@ def return_search_views(request):
     date_min = request.GET.get('strdate')
     date_max = request.GET.get('enddate')
 
+    shop = request.GET.get('shop')
+    sname = request.GET.get('sname')
+
     if date_min !="" and date_min is not None:
         records = records.filter(return_date__gte = date_min)
 
     if date_max !="" and date_max is not None:
         records = records.filter(return_date__lte = date_max)
+
+    if sname !="" and sname is not None:
+        records = records.filter(salesman__icontains = sname)
+
+    if shop !="" and shop is not None:
+        records = records.filter(shop_name__icontains = shop)
     return render(request,'salesmanapp/return.html', {'records':records})
 
 @login_required(login_url='login')
@@ -119,6 +178,7 @@ def get_iname_views(request):
         total_sale = int(idata.Open_stock) - int(idata.item_quantity)
         get_iname = {
                "item_id": idata.id,
+               "shop_name": idata.shop_name,
                "item_name": idata.item_name,
                "brand_name": idata.brand_name,
                "item_size": idata.item_size,

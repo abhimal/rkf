@@ -4,6 +4,7 @@ import datetime
 # Create your models here.
 class Items(models.Model):
     id = models.AutoField(primary_key=True)
+    shop_name = models.CharField(max_length=64,default='None')
     item_name = models.CharField(max_length=64)
     brand_name = models.CharField(max_length=64)
     item_size =  models.CharField(max_length=64)
@@ -32,6 +33,7 @@ class Sales(models.Model):
     comission = models.FloatField()
     exchange_item = models.BooleanField(default=False)
     return_item = models.CharField(max_length=64)
+    shop_name = models.CharField(max_length=64,default='None')
     sale_dt = models.DateTimeField(auto_now_add=True)
     sale_date = models.DateField(auto_now_add=True)
 
@@ -41,6 +43,7 @@ class Sales(models.Model):
 class Return(models.Model):
     return_id = models.ForeignKey(Items, on_delete=models.CASCADE)
     salesman =  models.CharField(max_length=64)
+    shop_name = models.CharField(max_length=64,default='None')
     return_dt = models.DateTimeField(auto_now_add=True)
     return_date = models.DateField(auto_now_add=True)
 
@@ -54,8 +57,16 @@ class StockAudit(models.Model):
     physical_qty =  models.IntegerField()
     total_sale =  models.IntegerField(default='0')
     missing_qty =  models.IntegerField(default='0')
+    shop_name =  models.CharField(max_length=64,default='None')
     stock_dt = models.DateTimeField(auto_now_add=True)
     stock_audit_date = models.DateField(auto_now_add=True)
 
     def __str__(self):#show tabel name on admin
         return self.stock_id
+
+class Shop(models.Model):
+    shopname =  models.CharField(max_length=64)
+    shop_dt = models.DateTimeField(auto_now_add=True)
+    shop_date = models.DateField(auto_now_add=True)
+    def __str__(self):#show tabel name on admin
+        return self.shopname

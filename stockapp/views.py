@@ -31,11 +31,12 @@ def stockaudit_views(request):
         id = item_id.id
         Open_stock = item_id.Open_stock
         Closing_stock = item_id.item_quantity
+        shop = item_id.shop_name
 
         total_sale = int(Open_stock) - int(Closing_stock)
         missing_item = int(Closing_stock) - int(qty)
 
-        stock_info = StockAudit(opening_stock=Open_stock,closing_stock=Closing_stock,physical_qty=qty, total_sale=total_sale, missing_qty=missing_item)
+        stock_info = StockAudit(opening_stock=Open_stock,closing_stock=Closing_stock,physical_qty=qty, total_sale=total_sale, missing_qty=missing_item, shop_name=shop)
 
         stock_info.stock_id_id = id
 
@@ -49,8 +50,12 @@ def stockaudit_views(request):
 @admin_only
 def stock_report_views(request):
     records = StockAudit.objects.all().order_by('-id')
+    shop = request.GET.get('shop')
     date_min = request.GET.get('strdate')
     date_max = request.GET.get('enddate')
+
+    if shop !="" and shop is not None:
+        records = records.filter(shop_name__icontains = shop)
 
     if date_min !="" and date_min is not None:
         records = records.filter(stock_audit_date__gte = date_min)
@@ -58,6 +63,4 @@ def stock_report_views(request):
     if date_max !="" and date_max is not None:
         records = records.filter(stock_audit_date__lte = date_max)
 
-    # myFilter = StockFilter(request.GET, queryset=records)
-    # records = myFilter.qs
     return render(request,'stockapp/stockreport.html', {'records':records})
