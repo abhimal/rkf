@@ -98,7 +98,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'RKF',
         'USER': 'root',
-        'PASSWORD': 'abhi1234'
+        'PASSWORD': 'dbpsw'
     }
 }
 
@@ -148,5 +148,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'abhishekmalviyafuelup@gmail.com'
-EMAIL_HOST_PASSWORD = 'fuelup2020'
+EMAIL_HOST_USER = 'abcd@gmail.com'
+EMAIL_HOST_PASSWORD = 'psw'
