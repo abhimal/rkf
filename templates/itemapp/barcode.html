@@ -17,7 +17,13 @@
 <link rel="manifest" href="{%static "javascript/manifest.json" %}">
 <style>
  html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-</style>
+
+ @media print {
+       @page {size: 75mm 50mm;}
+}
+
+}
+  </style>
 <script type="text/javascript" src="{%static "javascript/html5-qrcode.js" %}"></script>
 <script type="text/javascript" src="{%static "javascript/qrcode.js" %}"></script>
 <script type="text/javascript" src="{%static "javascript/JsBarcode.all.min.js" %}"></script>
@@ -128,28 +134,28 @@
   {% if item %}
   {% for items in item %}
 
-  <div class="  w3-text-black w3-margin">
+  <div class="w3-text-black w3-margin">
 
-    <div id="printablediv" class="w3-container w3-center">
-      <div class="w3-container">
+    <div id="printablediv">
+      <div class="w3-container w3-center">
         <table style="font-family: verdana;" class="w3-white" border = "2">
 
          <tr>
-            <td rowspan = "4">......</td>
-            <td><strong>Article</strong></td>
-            <td><strong>{{items.item_name}} / {{items.brand_name}}</strong></td>
+            <td rowspan = "4" style="color:#ffff;">..................</td>
+            <td style="font-size: 25px;"><strong>Article</strong></td>
+            <td style="font-size: 25px;"><strong>{{items.item_name}}</strong></td>
          </tr>
          <tr>
-            <td><strong>Colour</strong></td>
-            <td><strong>{{items.item_color}}</strong></td>
+            <td style="font-size: 25px;"><strong>Brand</strong></td>
+            <td style="font-size: 25px;"><strong>{{items.brand_name}}</strong></td>
          </tr>
          <tr>
-            <td><strong>MRP</strong></td>
-            <td><strong>{{items.mrp}}</strong> <i class="fas fa-rupee-sign"></i></td>
+            <td style="font-size: 25px;"><strong>Color</strong></td>
+            <td style="font-size: 25px;"><strong>{{items.item_color}}</strong></td>
          </tr>
          <tr>
-            <td><strong>P Date</strong></td>
-            <td><strong>{{items.item_date}}</strong></td>
+            <td style="font-size: 25px;"><strong>MRP</strong></td>
+            <td style="font-size: 25px;"><strong>{{items.mrp}}</strong> <i class="fas fa-rupee-sign"></i></td>
          </tr>
          <tr>
             <td colspan = "3"><svg id="barcode"
@@ -157,7 +163,7 @@
              jsbarcode-value="{{items.item_code}}"
              jsbarcode-textmargin="0"
              jsbarcode-fontoptions="bold"
-             jsbarcode-width="4">
+             jsbarcode-width="5">
             </svg></td>
          </tr>
       </table>
@@ -189,21 +195,25 @@
 JsBarcode("#barcode").init();
 //print
 function printDiv(divID) {
-            //Get the HTML of div
-            var divElements = document.getElementById(divID).innerHTML;
-            //Get the HTML of whole page
-            var oldPage = document.body.innerHTML;
+  //Get the HTML of div
+  var divElements = document.getElementById(divID).innerHTML;
+  //Get the HTML of whole page
+  var oldPage = document.body.innerHTML;
 
-            //Reset the page's HTML with div's HTML only
-            document.body.innerHTML =
-              "<html><head><title></title></head><body>" +
-              divElements + "</body>";
 
-            //Print Page
-            window.print();
+  //Reset the page's HTML with div's HTML only
+  document.body.innerHTML =
+    "<html><head><title></title></head><body>" +
+    divElements + "</body>";
 
-            //Restore orignal HTML
-            document.body.innerHTML = oldPage;
+
+  //Print Page
+  window.print();
+
+
+  //Restore orignal HTML
+  document.body.innerHTML = oldPage;
+
 
 
         }

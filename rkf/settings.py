@@ -25,7 +25,7 @@ STATIC_DIR = os.path.join(BASE_DIR,'static')
 SECRET_KEY = '@pou$y(3k=5l16rkq(2wc_bg1p&=#ahkeoehni2z6l5v421rsp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -49,8 +49,7 @@ INSTALLED_APPS = [
     'salesmanapp',
     'loginapp',
     'account',
-    'actionapp',
-    'stockapp'
+    'actionapp'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -98,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'RKF',
         'USER': 'root',
-        'PASSWORD': 'dbpsw'
+        'PASSWORD': 'abhi1234'
     }
 }
 
@@ -142,11 +141,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
 STATIC_DIR
 ]
-
-#SMPT Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'abcd@gmail.com'
-EMAIL_HOST_PASSWORD = 'psw'
