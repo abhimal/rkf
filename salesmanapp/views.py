@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from itemapp.models import Items, Sales, Return
+from account.models import Account
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -81,7 +82,8 @@ def salesman_views(request):
             return render(request,'salesmanapp/salesman.html')
 
     else:
-        return render(request,'salesmanapp/salesman.html')
+        users = Account.objects.all()
+        return render(request,'salesmanapp/salesman.html',{'users':users})
 
 @login_required(login_url='login')
 @admin_only

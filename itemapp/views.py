@@ -29,10 +29,8 @@ def seacrh_views(request):
 
         total_sale = Sales.objects.all().filter(shop_name=shop).aggregate(Sum('sale_price'))
         sale = total_sale['sale_price__sum']
-        print(sale)
         totalamount = Items.objects.all().filter(shop_name=shop).aggregate(Sum('total_amount'))
         amount = totalamount['total_amount__sum']
-        print(amount)
         return render(request,'itemapp/searchshop.html',{'shops':shops,'sale':sale,'amount':amount,'shop':shop})
 
     else:

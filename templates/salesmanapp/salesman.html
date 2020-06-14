@@ -284,9 +284,9 @@ canvas.drawing, canvas.drawingBuffer {
          </table>
 
           <div class="w3-container">
-           <p><input type="text" id="result" name="icode"></p>
-           <p><input type="text" id="hidesale" name="sale_man" value="{{user.user_name}}"></p>
-           <p><input type="text" id="hidemob" name="mobnumber" value="{{user.mobile_number}}"></p>
+           <p><input type="text" id="result" name="icode" hidden></p>
+           <p><input type="text" id="hidesale" name="sale_man" value="{{user.user_name}}" hidden></p>
+           <p><input type="text" id="hidemob" name="mobnumber" value="{{user.mobile_number}}" hidden></p>
            <p><input class="w3-check" type="checkbox" id="exg" name="exchange_item" value="True" ><label class="w3-xlarge" style="margin-left:2px;"> &nbsp; item exchange </label></p>
            <p><input class="w3-input" onkeyup="spclick()" type="number" id="slcl" name="sale_close" placeholder="0.0" required></p>
 
@@ -304,6 +304,7 @@ canvas.drawing, canvas.drawingBuffer {
     <div class="w3-display-bottomright">
       <button id="scn" onclick="load_quagga()" class="w3-margin w3-red w3-xxlarge w3-circle w3-hover-shadow" name="isale"><i class="fas fa-camera w3-xxlarge"></i></button>
       <button id="scn1" onclick="showbr()" class="w3-margin w3-red w3-xxlarge w3-circle w3-hover-shadow" name="isale"><i class="fas fa-keyboard"></i></button>
+
     </div>
      <div class="w3-container w3-center">
        <div class="w3-display-middle" id="lds-ellipsis"><div></div><div></div><div></div><div></div></div>

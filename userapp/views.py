@@ -9,6 +9,7 @@ from loginapp.decorator import unauthenticated_user, allowed_user, admin_only
 from django.contrib.auth.models import Group
 from django.db.models import Count, Sum, Avg
 from django.http import JsonResponse
+import datetime
 
 @login_required(login_url='login')
 @admin_only
@@ -108,18 +109,19 @@ def search_user_views(request):
     return render(request,'userapp/searchuser.html', {'users':users})
 
 @login_required(login_url='login')
-#@admin_only
 def sales_user_record_views(request):
     if request.method == 'POST':
         users = Account.objects.all()
         username = request.POST['user_name']
-
-        total_comission = Sales.objects.filter(salesman=username).aggregate(Sum('comission'))
-        total_sale = Sales.objects.filter(salesman=username).aggregate(Sum('sale_price'))
+        total_comission = Sales.objects.filter(salesman=username).filter(sale_dt__gte=datetime.date.today()).aggregate(Sum('comission'))
+        total_sale = Sales.objects.filter(salesman=username).filter(sale_dt__gte=datetime.date.today()).aggregate(Sum('sale_price'))
 
         comission = total_comission['comission__sum']
         sale = total_sale['sale_price__sum']
-
+        try:
+            comission = round(comission)
+        except TypeError:
+            pass
         return render(request,'userapp/userrecord.html',{'users':users, 'comission':comission, 'sale':sale, 'username':username})
     else:
         users = Account.objects.all()
@@ -132,7 +134,6 @@ def get_User_views(request):
         try:
             total_comission = Sales.objects.filter(salesman=username).aggregate(Sum('comission'))
             total_sale = Sales.objects.filter(salesman=username).aggregate(Sum('sale_price'))
-
             comission = total_comission['comission__sum']
             sale = total_sale['sale_price__sum']
         except:

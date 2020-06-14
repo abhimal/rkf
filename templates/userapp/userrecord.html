@@ -139,9 +139,24 @@
 </form>
 
 <hr>
-<div class="w3-container w3-white">
+<div class="w3-container w3-white w3-border w3-hover-shadow w3-animate-zoom">
 
-    <canvas id="pie-chart" width="800" height="450"></canvas>
+  <table class="w3-table w3-bordered">
+  <tr>
+      <td><label class="w3-xlarge">User Name</label></td>
+      <td><label class="w3-xlarge">{{username}}</label></td>
+  </tr>
+
+  <tr>
+      <td><label class="w3-xlarge">Total Sales</label></td>
+      <td><label class="w3-xlarge">{{sale}}</label></td>
+  </tr>
+
+  <tr>
+      <td><label class="w3-xlarge">Total Comission</label></td>
+      <td><label class="w3-xlarge">{{comission}}</label></td>
+  </tr>
+</table>
 
 </div>
 
@@ -149,30 +164,7 @@
 <hr>
 <br>
 </div>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-  new Chart(document.getElementById("pie-chart"), {
-      type: 'pie',
-      data: {
-        labels: ["Sales", "Commission"],
-        datasets: [{
-          label: "Sales (INR)",
-          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-          data: [{{sale}},{{comission}}]
-        }]
-      },
-      options: {
-        title: {
-          display: true,
-          text: '{{username}} total sales = {{sale}} INR and total comission = {{comission}} INR'
-
-        }
-      }
-  });
-         });
-
          // Clickable Dropdowns
          function dropdownShop() {
            var x = document.getElementById("DemoShop");
