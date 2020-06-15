@@ -293,6 +293,15 @@ canvas.drawing, canvas.drawingBuffer {
          </div>
           <div class="w3-container">
 
+            {%if user.is_admin%}
+            <select class="w3-select" id="hidesale" name="sale_man">
+            <option value="" disabled selected>Select User</option>
+            {% for user in users %}
+            <option value="{{user.user_name}}">{{user.user_name}}</option>
+            {%endfor%}
+            </select>
+            {%endif%}
+
            <button class="w3-btn w3-blue w3-mobile w3-section w3-round" name="isale"><i class="fas fa-shopping-cart"></i> Sale</button>
            <button class="w3-btn w3-blue w3-mobile w3-section w3-round" onclick='document.getElementById("slcl").value = 0;' name="ireturn"><i class="fas fa-undo-alt"></i> Return</button>
 
@@ -302,6 +311,7 @@ canvas.drawing, canvas.drawingBuffer {
         </div>
 
     <div class="w3-display-bottomright">
+
       <button id="scn" onclick="load_quagga()" class="w3-margin w3-red w3-xxlarge w3-circle w3-hover-shadow" name="isale"><i class="fas fa-camera w3-xxlarge"></i></button>
       <button id="scn1" onclick="showbr()" class="w3-margin w3-red w3-xxlarge w3-circle w3-hover-shadow" name="isale"><i class="fas fa-keyboard"></i></button>
 
