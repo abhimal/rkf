@@ -13,4 +13,4 @@ pyPdf2==1.26.0
 reportlab==3.5.42
 webencodings==0.5.1
 xhtml2pdf==0.2.4
-wheel==0.32.2
+wheel==0.38.1
