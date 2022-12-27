@@ -6,7 +6,7 @@ django-filter==2.2.0
 django-sslserver==0.22
 django-widget-tweaks==1.4.5
 uuid==1.30
-setuptools==39.0.1
+setuptools==65.5.1
 Pillow==7.1.2
 html5lib==1.0.1
 pyPdf2==1.26.0
